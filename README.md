@@ -3,47 +3,39 @@
 Precompile ember templates in grunt using only headless-ember.js and ember.js.
 
 ## Installation
-Install this grunt plugin next to your project's
+1. Install this grunt plugin next to your project's
 [grunt.js gruntfile][getting_started] with: `npm install grunt-ember-handlebars`
 
-Then add this line to your project's `grunt.js` gruntfile:
+2. Then add this line to your project's `grunt.js` gruntfile:
 
 ```javascript
 grunt.loadNpmTasks('grunt-ember-handlebars');
 ```
-
-[grunt]: https://github.com/cowboy/grunt
-[getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
-
 ## Documentation
 In your gruntfile.js:
 
 ```javascript
-module.exports = function(grunt) {
-  grunt.initConfig({
+grunt.initConfig({
 
-    // Compile ember templates:
-    ember_handlebars: {
-      all: {
-        // In practice, this could be:
-        // ['templates/**/*.hbs', 'templates/**/*.handlebars']
-        src: ['templates/main.hbs', 'templates/post.handlebars']
-        dest: 'templates/compiled'
-      }
-    },
-
-    // Include the templates in your app:
-    concat: {
-      all: {
-        src: ['templates/compiled/*.js', 'app.js'],
-        dest: 'public/myapp.js'
-      }
+  // Compile ember templates:
+  ember_handlebars: {
+    all: {
+      // In practice, this could be:
+      // src: ['templates/**/*.hbs', 'templates/**/*.handlebars']
+      src: ['templates/main.hbs', 'templates/post.handlebars'],
+      dest: 'templates/compiled'
     }
+  },
 
-  });
+  // Include the templates in your app:
+  concat: {
+    all: {
+      src: ['templates/compiled/*.js', 'app.js'],
+      dest: 'public/myapp.js'
+    }
+  }
 
-  grunt.registerTask('default', 'ember_handlebars concat');
-};
+});
 ```
 
 Run the task using `grunt`, and grunt-ember-handlebars will compile and include

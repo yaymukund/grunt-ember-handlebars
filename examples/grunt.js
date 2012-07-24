@@ -23,5 +23,8 @@ module.exports = function(grunt) {
     }
   });
 
+  // For this to work, you need to have `npm install grunt-ember-handlebars`
+  grunt.loadNpmTasks('grunt-ember-handlebars');
+
   grunt.registerTask('default', 'ember_handlebars concat');
 };
