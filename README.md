@@ -7,11 +7,11 @@ Precompile ember templates in grunt using only headless-ember.js and ember.js.
 [grunt.js gruntfile][getting_started] with: `npm install grunt-ember-handlebars`
 
 2. Then add this line to your project's `grunt.js` gruntfile:
+  ```javascript
+  grunt.loadNpmTasks('grunt-ember-handlebars');
+  ```
 
-```javascript
-grunt.loadNpmTasks('grunt-ember-handlebars');
-```
-## Documentation
+## Usage
 In your gruntfile.js:
 
 ```javascript
