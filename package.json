@@ -1,0 +1,45 @@
+{
+  "name": "grunt-ember-handlebars",
+  "description": "Precompile ember templates in grunt using only headless-ember.js and ember.js.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/yaymukund/grunt-ember-handlebars",
+  "author": {
+    "name": "Mukund Lakshman",
+    "email": "yaymukund@gmail.com",
+    "url": "http://yaymukund.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yaymukund/grunt-ember-handlebars.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yaymukund/grunt-ember-handlebars/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/yaymukund/grunt-ember-handlebars/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "grunt.js",
+  "bin": "bin/grunt-ember-handlebars",
+  "engines": {
+    "node": "0.8.x"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "grunt": "~0.3.11"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.11"
+  },
+  "keywords": [
+    "gruntplugin",
+    "ember",
+    "handlebars",
+    "templates",
+    "precompile"
+  ]
+}
