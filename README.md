@@ -37,6 +37,8 @@ grunt.initConfig({
   }
 
 });
+
+grunt.registerTask('default', ['ember_handlebars', 'concat']);
 ```
 
 Run the task using `grunt`, and grunt-ember-handlebars will compile and include
@@ -54,6 +56,8 @@ App.PostView = Em.View.extend({
 });
 // etc.
 ```
+
+That's it!
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding

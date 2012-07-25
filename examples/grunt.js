@@ -1,12 +1,8 @@
-// This grunt task will compile all .hbs files under templates/**/*.hbs to a
-// templates/compiled/' directory.
-//
-// I usually have a separate concat task run afterwards to bundle up the
-// templates into one file.
 module.exports = function(grunt) {
   grunt.initConfig({
 
-    // Compile ember templates.
+    // 1. Compile all files under templates/**/*.hbs|handlebars to a
+    //    'templates/compiled' directory.
     ember_handlebars: {
       all: {
         src: ['templates/**/*.hbs', 'templates/**/*.handlebars'],
@@ -14,7 +10,8 @@ module.exports = function(grunt) {
       }
     }
 
-    // Include the templates in your app:
+    // 2. Concatenate the compiled files, app.js, and write the final package to
+    //    public/myapp.js
     concat: {
       all: {
         src: ['templates/compiled/*.js', 'app.js'],
@@ -26,5 +23,5 @@ module.exports = function(grunt) {
   // For this to work, you need to have `npm install grunt-ember-handlebars`
   grunt.loadNpmTasks('grunt-ember-handlebars');
 
-  grunt.registerTask('default', 'ember_handlebars concat');
+  grunt.registerTask('default', ['ember_handlebars', 'concat']);
 };
