@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/yaymukund/grunt-ember-handlebars.png)](http://travis-ci.org/yaymukund/grunt-ember-handlebars)
 # grunt-ember-handlebars
 
 Precompile ember templates in grunt using only headless-ember.js and ember.js.
