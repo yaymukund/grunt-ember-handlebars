@@ -38,6 +38,8 @@ grunt.initConfig({
 
 });
 
+// Load the plugin. This assumes you have installed it via NPM.
+grunt.loadNpmTasks('grunt-ember-handlebars');
 grunt.registerTask('default', ['ember_handlebars', 'concat']);
 ```
 
