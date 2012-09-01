@@ -41,7 +41,8 @@
   },
 
   "devDependencies": {
-    "mocha": "1.4.x"
+    "mocha": "1.4.x",
+    "should": "1.1.x"
   },
 
   "keywords": [
