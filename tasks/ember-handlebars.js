@@ -35,7 +35,13 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('ember_handlebars', 'Precompile Ember Handlebars templates', function() {
     var files = grunt.file.expandFiles(this.file.src);
     grunt.utils._.each(files, function(file) {
-      grunt.helper('precompile_handlebars', file, this.dest);
+
+      console.log('Precompiling "' + file + '" to "' + dest + '"');
+      var compiled = grunt.helper('precompile_handlebars', file);
+
+      var out = path.join(this.dest, compiled.filename);
+      grunt.file.write(out, compiled.src, 'utf8');
+
     }, {dest: this.file.dest});
   });
 
@@ -43,8 +49,7 @@ module.exports = function(grunt) {
   // HELPERS
   // ==========================================================================
 
-  grunt.registerHelper('precompile_handlebars', function(file, dest) {
-    console.log('Precompiling "' + file + '" to "' + dest + '"');
+  grunt.registerHelper('precompile_handlebars', function(file) {
 
     // Create a context with the file.
     var context = vm.createContext({
@@ -60,11 +65,13 @@ module.exports = function(grunt) {
 
     // Generate code for our new js file.
     var templateName = path.basename(file).replace(/\.hbs|\.handlebars/, '');
-    var namedTemplateJs = 'Ember.TEMPLATES["' + templateName + '"] = ' +
-                          'Ember.Handlebars.template(' + context.tJs + ');';
+    var src = 'Ember.TEMPLATES["' + templateName + '"] = ' +
+              'Ember.Handlebars.template(' + context.tJs + ');';
 
-    // Write it to a similarly-named .js file.
-    var out = path.join(dest, templateName + '.js');
-    grunt.file.write(out, namedTemplateJs, 'utf8');
+    return {
+      filename: templateName + '.js',
+      src: src
+    };
+
   });
 };
