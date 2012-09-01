@@ -20,13 +20,13 @@
  */
 
 module.exports = function(grunt) {
-  var vm            = require('vm');
   var fs            = require('fs');
+  var vm            = require('vm');
   var path          = require('path');
 
-  var libPath       = __dirname + '/lib';
-  var headlessEmber = fs.readFileSync(libPath + '/headless-ember.js', 'utf8');
-  var emberJs       = fs.readFileSync(libPath + '/ember.js', 'utf8');
+  var vendorDir     = __dirname + '/../vendor';
+  var headlessEmber = fs.readFileSync(vendorDir + '/headless-ember.js', 'utf8');
+  var emberJs       = fs.readFileSync(vendorDir + '/ember.js', 'utf8');
 
   // ==========================================================================
   // TASKS

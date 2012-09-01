@@ -42,7 +42,8 @@
 
   "devDependencies": {
     "mocha": "1.4.x",
-    "should": "1.1.x"
+    "should": "1.1.x",
+    "jsdom": "0.2.x"
   },
 
   "keywords": [
