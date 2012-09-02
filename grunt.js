@@ -1,14 +1,22 @@
 module.exports = function(grunt) {
-  // Project configuration.
   grunt.initConfig({
-    lint: {
-      files: ['grunt.js', 'tasks/ember-handlebars.js']
-    }
+    // Tests
+    mocha: {
+      all: {
+        src: 'test/compilation.js',
+        options: {
+          ui: 'bdd',
+          reporter: 'tap'
+        }
+      }
+    },
+
+    updateVendor: {}
   });
 
-  // Load local tasks.
+  grunt.loadTasks('dev-tasks');
   grunt.loadTasks('tasks');
 
   // Default task.
-  grunt.registerTask('default', 'lint');
+  grunt.registerTask('default', 'mocha');
 };
