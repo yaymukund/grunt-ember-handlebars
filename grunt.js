@@ -14,6 +14,7 @@ module.exports = function(grunt) {
     updateVendor: {}
   });
 
+  grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadTasks('dev-tasks');
   grunt.loadTasks('tasks');
 
