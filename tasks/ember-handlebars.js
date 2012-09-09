@@ -36,7 +36,7 @@ module.exports = function(grunt) {
     var files = grunt.file.expandFiles(this.file.src);
     grunt.utils._.each(files, function(file) {
 
-      console.log('Precompiling "' + file + '" to "' + this.dest + '"');
+      grunt.log.write('Precompiling "' + file + '" to "' + this.dest + '"');
       var compiled = grunt.helper('precompile_handlebars', file);
 
       var out = path.join(this.dest, compiled.filename);
