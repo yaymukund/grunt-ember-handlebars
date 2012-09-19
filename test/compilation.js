@@ -34,7 +34,7 @@ describe('precompile_handlebars', function() {
     before(function(done) {
       var vendorDir      = __dirname + '/vendor',
           jQueryJs       = fs.readFileSync(vendorDir + '/jquery-1.7.2.js', 'utf8'),
-          handlebarsJs   = fs.readFileSync(vendorDir + '/handlebars-1.0.0.beta.6.js'),
+          handlebarsJs   = fs.readFileSync(vendorDir + '/handlebars-1.0.rc.1.js'),
           emberJs        = fs.readFileSync(vendorDir + '/ember.js', 'utf8');
 
       jsdom.env({

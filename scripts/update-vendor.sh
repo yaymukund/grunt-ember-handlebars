@@ -14,7 +14,7 @@ rake
 
 echo 'Copying files'
 cp dist/ember.js "$test_dir"
-cp lib/handlebars-1.0.0.beta.6.js "$test_dir"
+cp lib/handlebars-1.0.rc.1.js "$test_dir"
 cp lib/jquery-1.7.2.js "$test_dir"
 
 cp lib/headless-ember.js "$vendor_dir"
