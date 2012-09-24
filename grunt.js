@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     // Tests
-    mocha: {
+    simplemocha: {
       all: {
         src: 'test/compilation.js',
         options: {
@@ -19,5 +19,5 @@ module.exports = function(grunt) {
   grunt.loadTasks('tasks');
 
   // Default task.
-  grunt.registerTask('default', 'mocha');
+  grunt.registerTask('default', 'simplemocha');
 };

@@ -42,7 +42,7 @@
 
   "devDependencies": {
     "mocha": "1.4.x",
-    "grunt-simple-mocha": "0.1.x",
+    "grunt-simple-mocha": "0.2.x",
     "should": "1.1.x",
     "jsdom": "0.2.x"
   },
