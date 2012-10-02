@@ -140,8 +140,8 @@ window.ember_deprecateFunc  = Ember.deprecateFunc("ember_deprecateFunc is deprec
 
 })();
 
-// Version: v1.0.pre-149-g117655b
-// Last commit: 117655b (2012-09-18 10:22:34 -0700)
+// Version: v1.0.pre-160-g7d62790
+// Last commit: 7d62790 (2012-09-26 15:59:36 -0700)
 
 
 (function() {
@@ -3096,32 +3096,33 @@ ComputedPropertyPrototype.set = function(obj, keyName, value) {
       hadCachedValue = false,
       ret;
   this._suspended = obj;
+  try {
+    ret = this.func.call(obj, keyName, value);
 
-  if (cacheable && keyName in meta.cache) {
-    if (meta.cache[keyName] === value) {
-      return;
+    if (cacheable && keyName in meta.cache) {
+      if (meta.cache[keyName] === ret) {
+        return;
+      }
+      hadCachedValue = true;
     }
-    hadCachedValue = true;
-  }
 
-  if (watched) { Ember.propertyWillChange(obj, keyName); }
+    if (watched) { Ember.propertyWillChange(obj, keyName); }
 
-  if (cacheable && hadCachedValue) {
-    delete meta.cache[keyName];
-  }
-
-  ret = this.func.call(obj, keyName, value);
-
-  if (cacheable) {
-    if (!watched && !hadCachedValue) {
-      addDependentKeys(this, obj, keyName, meta);
+    if (cacheable && hadCachedValue) {
+      delete meta.cache[keyName];
     }
-    meta.cache[keyName] = ret;
+
+    if (cacheable) {
+      if (!watched && !hadCachedValue) {
+        addDependentKeys(this, obj, keyName, meta);
+      }
+      meta.cache[keyName] = ret;
+    }
+
+    if (watched) { Ember.propertyDidChange(obj, keyName); }
+  } finally {
+    this._suspended = oldSuspended;
   }
-
-  if (watched) { Ember.propertyDidChange(obj, keyName); }
-
-  this._suspended = oldSuspended;
   return ret;
 };
 
@@ -12186,8 +12187,10 @@ Ember.ControllerMixin.reopen({
     }
 
     outletName = outletName || 'view';
-
-    Ember.assert("You must supply a name or a view class to connectOutlet, but not both", (!!name && !viewClass && !controller) || (!name && !!viewClass));
+    
+    Ember.assert("The viewClass is either missing or the one provided did not resolve to a view", !!name || (!name && !!viewClass));
+    
+    Ember.assert("You must supply a name or a viewClass to connectOutlet, but not both", (!!name && !viewClass && !controller) || (!name && !!viewClass));
 
     if (name) {
       var namespace = get(this, 'namespace'),
@@ -12971,8 +12974,8 @@ Ember.View = Ember.Object.extend(Ember.Evented,
 
     The context of a view is looked up as follows:
 
-    1. Specified controller
-    2. Supplied context (usually by Handlebars)
+    1. Supplied context (usually by Handlebars)
+    2. Specified controller
     3. `parentView`'s context (for a child of a ContainerView)
 
     The code in Handlebars that overrides the `_context` property first
@@ -19296,7 +19299,12 @@ Ember.Handlebars.helpers = objectCreate(Handlebars.helpers);
   @constructor
 */
 Ember.Handlebars.Compiler = function() {};
-Ember.Handlebars.Compiler.prototype = objectCreate(Handlebars.Compiler.prototype);
+
+// Handlebars.Compiler doesn't exist in runtime-only
+if (Handlebars.Compiler) {
+  Ember.Handlebars.Compiler.prototype = objectCreate(Handlebars.Compiler.prototype);
+}
+
 Ember.Handlebars.Compiler.prototype.compiler = Ember.Handlebars.Compiler;
 
 /**
@@ -19306,8 +19314,14 @@ Ember.Handlebars.Compiler.prototype.compiler = Ember.Handlebars.Compiler;
   @constructor
 */
 Ember.Handlebars.JavaScriptCompiler = function() {};
-Ember.Handlebars.JavaScriptCompiler.prototype = objectCreate(Handlebars.JavaScriptCompiler.prototype);
-Ember.Handlebars.JavaScriptCompiler.prototype.compiler = Ember.Handlebars.JavaScriptCompiler;
+
+// Handlebars.JavaScriptCompiler doesn't exist in runtime-only
+if (Handlebars.JavaScriptCompiler) {
+  Ember.Handlebars.JavaScriptCompiler.prototype = objectCreate(Handlebars.JavaScriptCompiler.prototype);
+  Ember.Handlebars.JavaScriptCompiler.prototype.compiler = Ember.Handlebars.JavaScriptCompiler;
+}
+
+
 Ember.Handlebars.JavaScriptCompiler.prototype.namespace = "Ember.Handlebars";
 
 
@@ -19387,24 +19401,27 @@ Ember.Handlebars.precompile = function(string) {
   return new Ember.Handlebars.JavaScriptCompiler().compile(environment, options, undefined, true);
 };
 
-/**
-  The entry point for Ember Handlebars. This replaces the default Handlebars.compile and turns on
-  template-local data and String parameters.
+// We don't support this for Handlebars runtime-only
+if (Handlebars.compile) {
+  /**
+    The entry point for Ember Handlebars. This replaces the default Handlebars.compile and turns on
+    template-local data and String parameters.
 
-  @method compile
-  @for Ember.Handlebars
-  @static
-  @param {String} string The template to compile
-  @return {Function}
-*/
-Ember.Handlebars.compile = function(string) {
-  var ast = Handlebars.parse(string);
-  var options = { data: true, stringParams: true };
-  var environment = new Ember.Handlebars.Compiler().compile(ast, options);
-  var templateSpec = new Ember.Handlebars.JavaScriptCompiler().compile(environment, options, undefined, true);
+    @method compile
+    @for Ember.Handlebars
+    @static
+    @param {String} string The template to compile
+    @return {Function}
+  */
+  Ember.Handlebars.compile = function(string) {
+    var ast = Handlebars.parse(string);
+    var options = { data: true, stringParams: true };
+    var environment = new Ember.Handlebars.Compiler().compile(ast, options);
+    var templateSpec = new Ember.Handlebars.JavaScriptCompiler().compile(environment, options, undefined, true);
 
-  return Handlebars.template(templateSpec);
-};
+    return Handlebars.template(templateSpec);
+  };
+}
 
 /**
   @private
@@ -22665,8 +22682,8 @@ Ember Handlebars
 
 })();
 
-// Version: v1.0.pre-149-g117655b
-// Last commit: 117655b (2012-09-18 10:22:34 -0700)
+// Version: v1.0.pre-160-g7d62790
+// Last commit: 7d62790 (2012-09-26 15:59:36 -0700)
 
 
 (function() {
