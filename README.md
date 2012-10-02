@@ -67,6 +67,7 @@ style.
 ## Release History
 v0.4 - Updated ember.js library we're using, since it looks like precompilation
        has been updated.
+
 v0.1 - Woo!
 
 ## License
