@@ -19,59 +19,20 @@
  *   https://github.com/emberjs/ember.js/tree/master/lib
  */
 
+var precompiler = require('./lib/precompiler'),
+    path = require('path');
+
 module.exports = function(grunt) {
-  var fs            = require('fs');
-  var vm            = require('vm');
-  var path          = require('path');
-
-  var vendorDir     = __dirname + '/../vendor';
-  var headlessEmber = fs.readFileSync(vendorDir + '/headless-ember.js', 'utf8');
-  var emberJs       = fs.readFileSync(vendorDir + '/ember.js', 'utf8');
-
-  // ==========================================================================
-  // TASKS
-  // ==========================================================================
-
   grunt.registerMultiTask('ember_handlebars', 'Precompile Ember Handlebars templates', function() {
     var files = grunt.file.expandFiles(this.file.src);
     grunt.utils._.each(files, function(file) {
-
       grunt.log.write('Precompiling "' + file + '" to "' + this.dest + '"');
-      var compiled = grunt.helper('precompile_handlebars', file);
 
-      var out = path.join(this.dest, compiled.filename);
+      var compiled = precompiler.precompile(file);
+          out = path.join(this.dest, compiled.filename);
+
       grunt.file.write(out, compiled.src, 'utf8');
 
     }, {dest: this.file.dest});
-  });
-
-  // ==========================================================================
-  // HELPERS
-  // ==========================================================================
-
-  grunt.registerHelper('precompile_handlebars', function(file) {
-
-    // Create a context with the file.
-    var context = vm.createContext({
-      template: fs.readFileSync(file, 'utf8')
-    });
-
-    // Load ember, headless-ly.
-    vm.runInContext(headlessEmber, context, 'headless-ember.js');
-    vm.runInContext(emberJs, context, 'ember.js');
-
-    // Compile the file inside the context.
-    vm.runInContext('tJs = precompileEmberHandlebars(template);', context);
-
-    // Generate code for our new js file.
-    var templateName = path.basename(file).replace(/\.hbs|\.handlebars/, '');
-    var src = 'Ember.TEMPLATES["' + templateName + '"] = ' +
-              'Ember.Handlebars.template(' + context.tJs + ');';
-
-    return {
-      filename: templateName + '.js',
-      src: src
-    };
-
   });
 };

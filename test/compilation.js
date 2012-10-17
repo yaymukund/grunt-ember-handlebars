@@ -1,8 +1,8 @@
-var should = require('should');
-var grunt = require('grunt');
-
-var fs = require('fs');
-var jsdom = require('jsdom');
+var should = require('should'),
+    grunt = require('grunt'),
+    fs = require('fs'),
+    jsdom = require('jsdom'),
+    precompiler = require('../tasks/lib/precompiler');
 
 // In case the grunt being used to test is different than the grunt being
 // tested, initialize the task and config subsystems.
@@ -17,7 +17,7 @@ describe('precompile_handlebars', function() {
   var compiled;
 
   before(function() {
-    compiled = grunt.helper('precompile_handlebars', exampleFile);
+    compiled = precompiler.precompile(exampleFile);
   });
 
   it('has the correct filename', function() {
