@@ -2,20 +2,16 @@ module.exports = function(grunt) {
   grunt.initConfig({
     // Tests
     simplemocha: {
-      all: {
-        src: 'test/compilation.js',
-        options: {
-          ui: 'bdd',
-          reporter: 'tap'
-        }
-      }
-    },
+      options: {
+        ui: 'bdd',
+        reporter: 'tap'
+      },
 
-    updateVendor: {}
+      all: { src: 'test/compilation.js' }
+    }
   });
 
   grunt.loadNpmTasks('grunt-simple-mocha');
-  grunt.loadTasks('dev-tasks');
   grunt.loadTasks('tasks');
 
   // Default task.

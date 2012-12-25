@@ -2,6 +2,11 @@
 
 Precompile ember templates in grunt using only headless-ember.js and ember.js.
 
+### Updating from 0.1.x to 0.2.x
+
+This task now depends on grunt 0.4.x. Please see the
+[grunt 0.3 to 0.4 migration guide][migration_guide] for more details.
+
 ## Installation
 1. Install this grunt plugin next to your project's
 [grunt.js gruntfile][grunt_getting_started]
@@ -65,7 +70,9 @@ That's it!
 In lieu of a formal styleguide, take care to maintain the existing coding
 style.
 ## Release History
-v0,1.7 - Updated ember.js used for testing, ensure that tests continue
+v0.2.0 - Make ember-handlebars use grunt 0.4.x.
+
+v0.1.7 - Updated ember.js used for testing, ensure that tests continue
          working with new view context handling.
 
 v0.1.6 - Stopped using helpers, which will get removed in grunt 0.4.
@@ -82,3 +89,4 @@ Licensed under the MIT license.
 
 [grunt_getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
 [ember_docs_templates]: http://docs.emberjs.com/symbols/Ember.html#method=.TEMPLATES
+[migration_guide]: https://github.com/gruntjs/grunt/wiki/Upgrading-from-0.3-to-0.4
