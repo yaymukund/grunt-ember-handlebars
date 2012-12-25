@@ -65,6 +65,9 @@ That's it!
 In lieu of a formal styleguide, take care to maintain the existing coding
 style.
 ## Release History
+v0,1.7 - Updated ember.js used for testing, ensure that tests continue
+         working with new view context handling.
+
 v0.1.6 - Stopped using helpers, which will get removed in grunt 0.4.
 
 v0.1.4 - Updated ember.js library we're using, since it looks like

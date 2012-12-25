@@ -29,7 +29,7 @@ describe('precompile_handlebars', function() {
   });
 
   describe('a compiled template', function() {
-    var renderedView;
+    var myView, renderedView;
 
     before(function(done) {
       var vendorDir      = __dirname + '/vendor',
@@ -54,9 +54,12 @@ describe('precompile_handlebars', function() {
             templateName: 'example'
           });
 
-          var myView = MyView.create({
-            content: Ember.Object.create({
-              stuff: 'code'
+          myView = MyView.create({
+            value: 'baz',
+
+            context: Ember.Object.create({
+              subcontext: Ember.Object.create({ value: 'foo' }),
+              value: 'bar'
             })
           });
 
@@ -70,8 +73,16 @@ describe('precompile_handlebars', function() {
       });
     });
 
-    it('renders correctly', function() {
-      renderedView.should.include('Lots of code here.');
+    it('renders view values', function() {
+      renderedView.should.include(myView.get('value'));
+    });
+
+    it('renders context values', function() {
+      renderedView.should.include(myView.get('context.value'));
+    });
+
+    it('renders subcontexts values', function() {
+      renderedView.should.include(myView.get('context.subcontext.value'));
     });
   });
 });
