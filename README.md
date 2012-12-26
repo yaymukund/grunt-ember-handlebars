@@ -70,6 +70,8 @@ That's it!
 In lieu of a formal styleguide, take care to maintain the existing coding
 style.
 ## Release History
+v0.2.1 - Change utils to util. D'oh!
+
 v0.2.0 - Make ember-handlebars use grunt 0.4.x.
 
 v0.1.7 - Updated ember.js used for testing, ensure that tests continue
