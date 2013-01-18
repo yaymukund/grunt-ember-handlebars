@@ -24,16 +24,16 @@ var precompiler = require('./lib/precompiler'),
 
 module.exports = function(grunt) {
   grunt.registerMultiTask('ember_handlebars', 'Precompile Ember Handlebars templates', function() {
+    var data = this.data;
 
     // Precompile each file and write it to the output directory.
     grunt.util._.forEach(this.filesSrc.map(path.resolve), function(file) {
-      grunt.log.write('Precompiling "' + file + '" to "' + this.dest + '"\n');
+      grunt.log.write('Precompiling "' + file + '" to "' + data.dest + '"\n');
 
       var compiled = precompiler.precompile(file);
-          out = path.join(this.dest, compiled.filename);
+          out = path.join(data.dest, compiled.filename);
 
       grunt.file.write(out, compiled.src, 'utf8');
-
-    }, {dest: this.file.dest});
+    });
   });
 };
