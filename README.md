@@ -13,6 +13,8 @@ This task now uses the same interface as the excellent [grunt-contrib-handlebars
 This task now depends on grunt 0.4.x. Please see the
 [grunt 0.3 to 0.4 migration guide][migration_guide] for more details.
 
+[migration_guide]: https://github.com/gruntjs/grunt/wiki/Upgrading-from-0.3-to-0.4
+
 ## Getting Started
 If you haven't used [grunt][] before, be sure to check out the [Getting Started][] guide, as it explains how to create a [gruntfile][Getting Started] as well as install and use grunt plugins. Once you're familiar with that process, install this plugin with this command:
 
