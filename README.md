@@ -1,14 +1,18 @@
 # grunt-ember-handlebars 
 
-Precompile ember templates in grunt using only headless-ember.js and ember.js.
+Precompile ember templates in grunt using only ember-template-compiler.js.
 
-### Updating from 0.2.x
+### Updating from 0.3.x to 0.4.0
+
+You need handlebars-1.0-rc.3 and ember-1.0.0-rc.1. That's all!
+
+### Updating from 0.2.x to 0.3.0
 
 This task now uses the same interface as the excellent [grunt-contrib-handlebars task][grunt_contrib_handlebars]. Thank you Tim Branyen and maintainers of [grunt-contrib-handlebars][grunt_contrib_handlebars]!
 
 [grunt_contrib_handlebars]: https://github.com/gruntjs/grunt-contrib-handlebars
 
-### Updating from 0.1.x
+### Updating from 0.1.x to 0.2.0
 
 This task now depends on grunt 0.4.x. Please see the
 [grunt 0.3 to 0.4 migration guide][migration_guide] for more details.
@@ -124,6 +128,8 @@ ember_handlebars: {
 In lieu of a formal styleguide, take care to maintain the existing coding
 style.
 ## Release History
+v0.4.0 - Now requires handlebars-1.0-rc.3 and ember-1.0.0-rc.1.
+
 v0.3.0 - Copy the grunt-contrib interface, which is much nicer.
 
 v0.2.1 - Change utils to util. D'oh!

@@ -6,10 +6,12 @@
  * Licensed under the MIT license.
  *
  * A grunt task that precompiles Ember.js Handlebars templates into separate
- * .js files. This script uses headless-ember.js and ember.js. You can find
- * both those files in the main ember repo:
+ * .js files. This script uses ember-template-compiler.js from the ember.js
+ * repository:
  *
- *   https://github.com/emberjs/ember.js/tree/master/lib
+ *   https://github.com/emberjs/ember.js
+ *
+ * Run `rake` and you'll see the compiler in your dist directory.
  *
  * Much of this code owes its life to the grunt-contrib-handlebars repository:
  *
@@ -18,9 +20,8 @@
  * Thanks, Tim Branyen and contributors to grunt-contrib!
  */
 
-'use strict';
-
 module.exports = function(grunt) {
+  'use strict';
 
   var _ = grunt.util._;
   var helpers = require('grunt-lib-contrib').init(grunt);
@@ -70,7 +71,7 @@ module.exports = function(grunt) {
         var src = grunt.file.read(filepath);
         var compiled, filename;
         try {
-          compiled = require('./lib/precompiler').precompile(src);
+          compiled = require('./lib/ember-template-compiler').precompile(src);
           // if configured to, wrap template in Handlebars.template call
           if (options.wrapped) {
             compiled = 'Ember.Handlebars.template('+compiled+')';

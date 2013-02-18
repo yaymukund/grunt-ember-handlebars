@@ -1,15 +1,15 @@
 var should = require('should'),
     grunt = require('grunt'),
     jsdom = require('jsdom'),
-    precompiler = require('../tasks/lib/precompiler');
+    precompiler = require('../tasks/lib/ember-template-compiler');
 
 describe('A compiled template', function() {
-  var myView, renderedView;
+  var exampleView, renderedView;
 
   before(function(done) {
     var vendorDir      = __dirname + '/vendor',
-        jQueryJs       = grunt.file.read(vendorDir + '/jquery-1.7.2.js', 'utf8'),
-        handlebarsJs   = grunt.file.read(vendorDir + '/handlebars-1.0.rc.1.js'),
+        jQueryJs       = grunt.file.read(vendorDir + '/jquery-1.9.0.js', 'utf8'),
+        handlebarsJs   = grunt.file.read(vendorDir + '/handlebars-1.0.rc.3.js', 'utf8'),
         emberJs        = grunt.file.read(vendorDir + '/ember.js', 'utf8'),
         exampleFile    = grunt.file.read('test/example.handlebars'),
         compiledSrc    = precompiler.precompile(exampleFile),
@@ -29,21 +29,27 @@ describe('A compiled template', function() {
         var $ = window.jQuery,
             Ember = window.Ember;
 
-        var MyView = Ember.View.extend({
+        // Required for templateForName, so Ember can find the template.
+        Ember.Application.create();
+
+        var ExampleView = Ember.View.extend({
           templateName: 'example'
         });
 
-        myView = MyView.create({
+        exampleView = ExampleView.create({
           value: 'baz',
 
           context: Ember.Object.create({
-            subcontext: Ember.Object.create({ value: 'foo' }),
+            subcontext: Ember.Object.create({
+              value: 'foo'
+            }),
+
             value: 'bar'
           })
         });
 
         Ember.run(function() {
-          myView.appendTo('#test');
+          exampleView.appendTo('#test');
         });
 
         renderedView = $('#test').text();
@@ -53,14 +59,14 @@ describe('A compiled template', function() {
   });
 
   it('renders view values', function() {
-    renderedView.should.include(myView.get('value'));
+    renderedView.should.include(exampleView.get('value'));
   });
 
   it('renders context values', function() {
-    renderedView.should.include(myView.get('context.value'));
+    renderedView.should.include(exampleView.get('context.value'));
   });
 
   it('renders subcontexts values', function() {
-    renderedView.should.include(myView.get('context.subcontext.value'));
+    renderedView.should.include(exampleView.get('context.subcontext.value'));
   });
 });
