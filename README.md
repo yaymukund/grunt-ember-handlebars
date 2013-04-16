@@ -108,6 +108,21 @@ options: {
 }
 ```
 
+#### yui
+Type: `Boolean`
+Default: `false`
+
+Determine if preprocessed template will be wrapped in YUI module code. The module name will be composed of the name
+of the namespace and the file name without extension. i.e. in case namespace is "App.rootView" and template file is
+"Button.hbs" the resulting YUI module name is App.rootView.Button and compiled template is stored in Y.App.rootView.Button.
+If namespace is omitted the template is stored in Y.Ember.TEMPLATES.<filename without extension>.
+
+```js
+options: {
+    yui: true
+}
+```
+
 ### Usage Examples
 
 ```js
