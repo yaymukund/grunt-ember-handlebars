@@ -79,8 +79,6 @@ define(['ember'], function(Ember) {
 });
 ```
 
-
-
 #### processName
 Type: `function`
 
