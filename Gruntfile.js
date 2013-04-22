@@ -7,7 +7,8 @@ module.exports = function(grunt) {
       compile: {
         options: {
 		  yui: true,
-	      namespace: 'App.Namespace'
+	      namespace: 'App.Namespace',
+          banner: 'A license'
         },
 	      files: {
 		    "test/tmp/yuimodule.js": "test/fixtures/example.handlebars"
