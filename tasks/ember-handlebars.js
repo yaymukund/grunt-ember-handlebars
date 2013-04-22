@@ -25,6 +25,8 @@ module.exports = function(grunt) {
 
   var _ = grunt.util._;
   var helpers = require('grunt-lib-contrib').init(grunt);
+  var path = require('path');
+  var yuiWrapper = require(path.join(__dirname, 'lib/yui_wrapper.js'));
 
   // filename conversion for templates
   var defaultProcessName = function(name) { return name; };
@@ -96,7 +98,11 @@ module.exports = function(grunt) {
         grunt.log.warn('Destination not written because compiled files were empty.');
       } else {
         output.unshift(nsInfo.declaration);
-        grunt.file.write(f.dest, output.join(grunt.util.normalizelf(options.separator)));
+	    var content = output.join(grunt.util.normalizelf(options.separator));
+	    if (options.yui) {
+	      content = yuiWrapper.wrap(content, f.dest, options);
+		}
+        grunt.file.write(f.dest, content);
         grunt.log.writeln('File "' + f.dest + '" created.');
       }
     });
