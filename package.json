@@ -37,15 +37,15 @@
   },
 
   "dependencies": {
-    "grunt": "~0.4.0rc5",
+    "grunt": "~0.4.x",
     "grunt-lib-contrib": "~0.5.1"
   },
 
   "devDependencies": {
-    "mocha": "1.4.x",
-    "grunt-simple-mocha": "0.3.x",
-    "should": "1.1.x",
-    "jsdom": "0.2.x"
+    "mocha": "1.9.x",
+    "grunt-simple-mocha": "0.4.x",
+    "should": "1.2.x",
+    "jsdom": "0.6.x"
   },
 
   "keywords": [
