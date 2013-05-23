@@ -81,14 +81,8 @@ module.exports = function(grunt) {
           grunt.fail.warn('Handlebars failed to compile '+filepath+'.');
         }
 
-        // register partial or add template to namespace
-        if (isPartial.test(_.last(filepath.split('/')))) {
-          filename = processPartialName(filepath);
-          partials.push('Ember.Handlebars.registerPartial('+JSON.stringify(filename)+', '+compiled+');');
-        } else {
-          filename = processName(filepath);
-          templates.push(nsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
-        }
+        filename = isPartial.test(_.last(filepath.split('/'))) ? processPartialName(filepath) : processName(filepath);
+        templates.push(nsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
       });
 
       var output = partials.concat(templates);
