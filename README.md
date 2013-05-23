@@ -128,23 +128,19 @@ ember_handlebars: {
 In lieu of a formal styleguide, take care to maintain the existing coding
 style.
 ## Release History
-v0.4.0 - Now requires handlebars-1.0-rc.3 and ember-1.0.0-rc.1.
 
-v0.3.0 - Copy the grunt-contrib interface, which is much nicer.
-
-v0.2.1 - Change utils to util. D'oh!
-
-v0.2.0 - Make ember-handlebars use grunt 0.4.x.
-
-v0.1.7 - Updated ember.js used for testing, ensure that tests continue
-         working with new view context handling.
-
-v0.1.6 - Stopped using helpers, which will get removed in grunt 0.4.
-
-v0.1.4 - Updated ember.js library we're using, since it looks like
-         precompilation has been updated.
-
-v0.1.0 - Woo!
+* v0.5.0 - Drop support for registerPartial in favor of Ember.TEMPLATES.
+* v0.4.0 - Now requires handlebars-1.0-rc.3 and ember-1.0.0-rc.1.
+* v0.4.0 - now requires handlebars-1.0-rc.3 and ember-1.0.0-rc.1.
+* v0.3.0 - Copy the grunt-contrib interface, which is much nicer.
+* v0.2.1 - Change utils to util. D'oh!
+* v0.2.0 - Make ember-handlebars use grunt 0.4.x.
+* v0.1.7 - Updated ember.js used for testing, ensure that tests continue
+           working with new view context handling.
+* v0.1.6 - Stopped using helpers, which will get removed in grunt 0.4.
+* v0.1.4 - Updated ember.js library we're using, since it looks like
+           precompilation has been updated.
+* v0.1.0 - Woo!
 
 ## License
 Copyright (c) 2012 Mukund Lakshman
