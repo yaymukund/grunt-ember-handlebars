@@ -129,6 +129,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding
 style.
 ## Release History
 
+* v0.6.0 - Use ember-template-precompiler, update Handlebars to 1.0.0-rc.4.
 * v0.5.0 - Drop support for registerPartial in favor of Ember.TEMPLATES.
 * v0.4.0 - Now requires handlebars-1.0-rc.3 and ember-1.0.0-rc.1.
 * v0.4.0 - now requires handlebars-1.0-rc.3 and ember-1.0.0-rc.1.

@@ -23,8 +23,9 @@
 module.exports = function(grunt) {
   'use strict';
 
-  var _ = grunt.util._;
-  var helpers = require('grunt-lib-contrib').init(grunt);
+  var _ = grunt.util._,
+      helpers = require('grunt-lib-contrib').init(grunt),
+      precompiler = require('../lib/precompiler');
 
   // filename conversion for templates
   var defaultProcessName = function(name) { return name; };
@@ -54,8 +55,8 @@ module.exports = function(grunt) {
     var processPartialName = options.processPartialName || defaultProcessPartialName;
 
     this.files.forEach(function(f) {
-      var partials = [];
-      var templates = [];
+      var partials = [],
+          templates = [];
 
       // iterate files, processing partials and templates separately
       f.src.filter(function(filepath) {
@@ -71,7 +72,7 @@ module.exports = function(grunt) {
         var src = grunt.file.read(filepath);
         var compiled, filename;
         try {
-          compiled = require('./lib/ember-template-compiler').precompile(src);
+          compiled = precompiler.precompile(src);
           // if configured to, wrap template in Handlebars.template call
           if (options.wrapped) {
             compiled = 'Ember.Handlebars.template('+compiled+')';
