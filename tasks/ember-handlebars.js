@@ -40,12 +40,15 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('ember_handlebars', 'Precompile Ember Handlebars templates.', function() {
     var options = this.options({
       namespace: 'Ember.TEMPLATES',
+      componentsNamespace: 'Ember.TEMPLATES.components',
+      componentRegex: /\/components\/[^/]+$/,
       separator: grunt.util.linefeed + grunt.util.linefeed,
       wrapped: true
     });
     grunt.verbose.writeflags(options, 'Options');
 
     var nsInfo = helpers.getNamespaceDeclaration(options.namespace);
+    var compNsInfo = helpers.getNamespaceDeclaration(options.componentsNamespace);
 
     // assign regex for partial detection
     var isPartial = options.partialRegex || /^_/;
@@ -53,6 +56,10 @@ module.exports = function(grunt) {
     // assign filename transformation functions
     var processName = options.processName || defaultProcessName;
     var processPartialName = options.processPartialName || defaultProcessPartialName;
+
+    // assign components detection.
+    var isComponent = options.componentRegex;
+
 
     this.files.forEach(function(f) {
       var partials = [],
@@ -82,8 +89,19 @@ module.exports = function(grunt) {
           grunt.fail.warn('Handlebars failed to compile '+filepath+'.');
         }
 
-        filename = isPartial.test(_.last(filepath.split('/'))) ? processPartialName(filepath) : processName(filepath);
-        templates.push(nsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
+        //process var name/namespace of template.
+        if (isPartial.test(_.last(filepath.split('/'))) ) {
+            filename = processPartialName(filepath);
+            templates.push(nsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
+        } else if(isComponent(filepath)){
+            filename = processName(filepath);
+            templates.push(compNsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
+        } else {
+            filename = processName(filepath);
+            templates.push(nsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
+        }
+
+
       });
 
       var output = partials.concat(templates);
