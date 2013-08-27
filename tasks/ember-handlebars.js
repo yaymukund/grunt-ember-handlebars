@@ -21,97 +21,96 @@
  */
 
 module.exports = function(grunt) {
-  'use strict';
+    'use strict';
 
-  var _ = grunt.util._,
-      helpers = require('grunt-lib-contrib').init(grunt),
-      precompiler = require('../lib/precompiler');
+    var _ = grunt.util._,
+        helpers = require('grunt-lib-contrib').init(grunt),
+        precompiler = require('../lib/precompiler');
 
-  // filename conversion for templates
-  var defaultProcessName = function(name) { return name; };
+    // filename conversion for templates
+    var defaultProcessName = function(name) { return name; };
 
-  // filename conversion for partials
-  var defaultProcessPartialName = function(filePath) {
-    var pieces = _.last(filePath.split('/')).split('.');
-    var name   = _(pieces).without(_.last(pieces)).join('.'); // strips file extension
-    return name;
-  };
+    // filename conversion for partials
+    var defaultProcessPartialName = function(filePath) {
+        var pieces = _.last(filePath.split('/')).split('.');
+        var name   = _(pieces).without(_.last(pieces)).join('.'); // strips file extension
+        return name;
+    };
 
-  grunt.registerMultiTask('ember_handlebars', 'Precompile Ember Handlebars templates.', function() {
-    var options = this.options({
-      namespace: 'Ember.TEMPLATES',
-      componentsNamespace: 'Ember.TEMPLATES.components',
-      componentRegex: /\/components\/[^/]+$/,
-      separator: grunt.util.linefeed + grunt.util.linefeed,
-      wrapped: true
+    grunt.registerMultiTask('ember_handlebars', 'Precompile Ember Handlebars templates.', function() {
+        var options = this.options({
+            namespace: 'Ember.TEMPLATES',
+            componentRegex: /\/components\/[^/]+$/,
+            separator: grunt.util.linefeed + grunt.util.linefeed,
+            wrapped: true
+        });
+        grunt.verbose.writeflags(options, 'Options');
+
+        var nsInfo = helpers.getNamespaceDeclaration(options.namespace);
+
+        // assign regex for partial detection
+        var isPartial = options.partialRegex || /^_/;
+
+        // assign filename transformation functions
+        var processName = options.processName || defaultProcessName;
+        var processPartialName = options.processPartialName || defaultProcessPartialName;
+
+        // assign components detection.
+        var isComponent = options.componentRegex;
+        var componentObserved = false
+
+        this.files.forEach(function(f) {
+            var partials = [],
+                templates = [],
+                componentObserved = false;
+
+            // iterate files, processing partials and templates separately
+            f.src.filter(function(filepath) {
+                // Warn on and remove invalid source files (if nonull was set).
+                if (!grunt.file.exists(filepath)) {
+                    grunt.log.warn('Source file "' + filepath + '" not found.');
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+                .forEach(function(filepath) {
+                    var src = grunt.file.read(filepath);
+                    var compiled, filename;
+                    try {
+                        compiled = precompiler.precompile(src);
+                        // if configured to, wrap template in Handlebars.template call
+                        if (options.wrapped) {
+                            compiled = 'Ember.Handlebars.template('+compiled+')';
+                        }
+                    } catch (e) {
+                        grunt.log.error(e);
+                        grunt.fail.warn('Handlebars failed to compile '+filepath+'.');
+                    }
+
+                    //process var name/namespace of template.
+                    if (isPartial.test(_.last(filepath.split('/'))) ) {
+                        filename = processPartialName(filepath);
+                        templates.push(nsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
+                    } else if(isComponent.test(filepath)){
+                        filename = processName(filepath);
+                        templates.push(nsInfo.namespace + "[" + JSON.stringify( 'components/' + filename)+"] = " +compiled+';');
+                    } else {
+                        filename = processName(filepath);
+                        templates.push(nsInfo.namespace +'['+JSON.stringify(filename)+'] = '+compiled+';');
+                    }
+
+
+                });
+
+            var output = partials.concat(templates);
+            if (output.length < 1) {
+                grunt.log.warn('Destination not written because compiled files were empty.');
+            } else {
+                output.unshift(nsInfo.declaration);
+                grunt.file.write(f.dest, output.join(grunt.util.normalizelf(options.separator)));
+                grunt.log.writeln('File "' + f.dest + '" created.');
+            }
+        });
     });
-    grunt.verbose.writeflags(options, 'Options');
-
-    var nsInfo = helpers.getNamespaceDeclaration(options.namespace);
-    var compNsInfo = helpers.getNamespaceDeclaration(options.componentsNamespace);
-
-    // assign regex for partial detection
-    var isPartial = options.partialRegex || /^_/;
-
-    // assign filename transformation functions
-    var processName = options.processName || defaultProcessName;
-    var processPartialName = options.processPartialName || defaultProcessPartialName;
-
-    // assign components detection.
-    var isComponent = options.componentRegex;
-
-
-    this.files.forEach(function(f) {
-      var partials = [],
-          templates = [];
-
-      // iterate files, processing partials and templates separately
-      f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      })
-      .forEach(function(filepath) {
-        var src = grunt.file.read(filepath);
-        var compiled, filename;
-        try {
-          compiled = precompiler.precompile(src);
-          // if configured to, wrap template in Handlebars.template call
-          if (options.wrapped) {
-            compiled = 'Ember.Handlebars.template('+compiled+')';
-          }
-        } catch (e) {
-          grunt.log.error(e);
-          grunt.fail.warn('Handlebars failed to compile '+filepath+'.');
-        }
-
-        //process var name/namespace of template.
-        if (isPartial.test(_.last(filepath.split('/'))) ) {
-            filename = processPartialName(filepath);
-            templates.push(nsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
-        } else if(isComponent(filepath)){
-            filename = processName(filepath);
-            templates.push(compNsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
-        } else {
-            filename = processName(filepath);
-            templates.push(nsInfo.namespace+'['+JSON.stringify(filename)+'] = '+compiled+';');
-        }
-
-
-      });
-
-      var output = partials.concat(templates);
-      if (output.length < 1) {
-        grunt.log.warn('Destination not written because compiled files were empty.');
-      } else {
-        output.unshift(nsInfo.declaration);
-        grunt.file.write(f.dest, output.join(grunt.util.normalizelf(options.separator)));
-        grunt.log.writeln('File "' + f.dest + '" created.');
-      }
-    });
-  });
 };
