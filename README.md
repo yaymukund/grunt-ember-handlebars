@@ -115,6 +115,7 @@ style.
 
 ## Release History
 
+* v0.8.0 - Update Handlebars to v1.3.0.
 * v0.7.0 - Update Handlebars to v1.0.0. Don't strip leading underscores from
            partial names.
 * v0.6.0 - Use ember-template-precompiler, update Handlebars to 1.0.0-rc.4.
