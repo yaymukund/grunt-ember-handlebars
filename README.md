@@ -2,6 +2,23 @@
 
 Precompile ember templates in grunt using only ember-template-compiler.js.
 
+------------------------------
+## No longer maintained - please use [grunt-ember-templates][]
+
+When I wrote this package, there were no grunt plugins that compiled
+handlebars templates. Grunt has since flourished and now there are other,
+better maintained alternatives. I don't think there's much value in keeping
+this around any longer.
+
+If you're starting a new project that uses grunt to compile hbs
+templates, please look at [grunt-ember-templates][].
+
+\- Mukund
+
+[grunt-ember-templates]: https://github.com/dgeb/grunt-ember-templates
+
+------------------------------
+
 ### [Updating Guide](https://github.com/yaymukund/grunt-ember-handlebars/wiki/Updating-Guide)
 
 ## Getting Started
