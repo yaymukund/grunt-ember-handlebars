@@ -68,6 +68,19 @@ Default: `true`
 
 Determine if preprocessed template functions will be wrapped in Ember.Handlebars.template function.
 
+#### amd
+Type: `Boolean`
+default: `false`
+
+Wraps the output file with an AMD define function and returns the compiled template namespace unless namespace has been explicitly set to false in which case the template function will be returned directly.
+Depends on Ember.js being availiable as an AMD module.
+```js
+define(['ember'], function(Ember) {
+    //...//
+    returns this['[template namespace]'];
+});
+```
+
 #### processName
 Type: `function`
 

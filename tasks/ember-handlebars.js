@@ -77,6 +77,10 @@ module.exports = function(grunt) {
           if (options.wrapped) {
             compiled = 'Ember.Handlebars.template('+compiled+')';
           }
+
+          if(options.amd && options.namespace === false) {
+            compiled = 'return ' + compiled;
+          }
         } catch (e) {
           grunt.log.error(e);
           grunt.fail.warn('Handlebars failed to compile '+filepath+'.');
@@ -91,6 +95,18 @@ module.exports = function(grunt) {
         grunt.log.warn('Destination not written because compiled files were empty.');
       } else {
         output.unshift(nsInfo.declaration);
+        
+        if (options.amd) {
+          // Wrap the file in an AMD define fn.
+          output.unshift("define(['ember'], function(Ember) {");
+          if (options.namespace !== false) {
+            // Namespace has not been explicitly set to false; the AMD
+            // wrapper will return the object containing the template.
+            output.push("return "+nsInfo.namespace+";");
+          }
+          output.push("});");
+        }
+
         grunt.file.write(f.dest, output.join(grunt.util.normalizelf(options.separator)));
         grunt.log.writeln('File "' + f.dest + '" created.');
       }
