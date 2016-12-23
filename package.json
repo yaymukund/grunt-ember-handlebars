@@ -45,7 +45,7 @@
     "mocha": "1.9.x",
     "grunt-simple-mocha": "0.4.x",
     "should": "1.2.x",
-    "jsdom": "0.6.x"
+    "jsdom": "1.0.x"
   },
 
   "keywords": [
